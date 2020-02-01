@@ -1,0 +1,46 @@
+Redis安装:
+第一步：下载redis安装包
+
+wget http://download.redis.io/releases/redis-4.0.11.tar.gz
+
+第二步：解压压缩包
+tar -zxvf redis-4.0.11.tar.gz
+
+第三步：yum安装gcc依赖
+
+yum install gcc
+
+编译安装:
+cd src make 
+(报错使用make MALLOC=libc):说关于分配器allocator， 如果有MALLOC 这个 环境变量， 会有用这个环境变量的 去建立Redis。
+而且libc 并不是默认的 分配器， 默认的是 jemalloc, 因为 jemalloc 被证明 有更少的 fragmentation problems 比libc。
+但是如果你又没有jemalloc 而只有 libc 当然 make 出错。 所以加这么一个参数。
+
+2、配置redis
+
+redis.conf:
+daemonize为yes,requirepass为你的redis密码,bind注释掉禁用本机访问绑定,确保守护进程开启,也就是在后台可以运行
+protected-mode 为no 保护模式
+
+2.复制redis配置文件(启动脚本需要用到配置文件内容,所以要复制)
+
+mkdir /etc/redis
+cp /opt/redis/redis.conf /etc/redis/6379.conf
+
+3.设置redis.conf中daemonize为yes,确保守护进程开启,也就是在后台可以运行.
+find / -name redis_init_script
+cp /opt/redis/utils/redis_init_script /etc/init.d/redis
+
+4.修改启动脚本参数
+vi /etc/init.d/redis
+修改安装路径配置及脚本配置
+
+5.启动redis
+
+打开redis命令:service redis start
+
+关闭redis命令:service redis stop
+
+设为开机启动:chkconfig redis on
+
+设为开机关闭:chkconfig redis off
