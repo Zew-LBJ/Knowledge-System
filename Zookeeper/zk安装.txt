@@ -1,0 +1,44 @@
+下载安装包：
+ 解压tar -zxvf zookeeper-3.4.6.tar.gz
+ 修改配置：
+ cp zoo.defaulf.conf zoo.cfg
+ 
+dataDir=/opt/zookeeper/data 
+ 
+dataLogDir=/opt/zookeeper/logs 
+
+/opt/zookeeper/zookeeper-3.4.6/bin/zkServer.sh start     #服务端启动
+# /opt/zookeeper/zookeeper-3.4.6/bin/zkCli.sh -server localhost:2181     #客户端连接服务端
+
+开机自启动:
+vi /etc/rc.d/init.d/zookeeper
+==============================================
+#!/bin/bash
+# chkconfig:35 81 82
+# description:zookeeper server script
+if [ -z $1 ]
+ 
+then
+ 
+echo "缺少位置参数"
+ 
+echo "请使用$0 {start|start-foreground|stop|restart|status|upgrade|print-cmd}"
+ 
+exit 1
+ 
+fi
+ 
+/opt/zookeeper/zookeeper-3.4.6/bin/zkServer.sh $1
+================================================
+
+# chmod 755 /etc/rc.d/init.d/zookeeper
+# chkconfig --add /etc/rc.d/init.d/zookeeper
+
+通用Linux启动方法：/etc/rc.d/init.d/zookeeper start
+如果是红帽系列表发行版linux,可以使用如下高逼格命令启动服务：
+service zookeeper start
+service zookeeper stop
+service zookeeper restart
+service zookeeper status
+
+(确实JAVA_HOME报修改zkEnv.sh:写死JAVA_HOME)
